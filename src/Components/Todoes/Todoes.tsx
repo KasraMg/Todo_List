@@ -13,7 +13,8 @@ const useStyles = makeStyles({
     main:{
         display:'flex',
         justifyContent:'space-between',
-        alignItems:'baseline'
+        alignItems:'baseline',
+        flexWrap:'wrap'
     }
 });
 export default function Todoes() {
@@ -24,7 +25,7 @@ export default function Todoes() {
 
     return (
         <div style={{ marginBottom: '2rem' }}>
-            <main className={classes.main}>
+            <main id="todoesMain" className={classes.main}>
                  <div className={classes.formControl}>
                 <p>Filtering:</p>
                 <FormControl fullWidth>
@@ -41,7 +42,7 @@ export default function Todoes() {
                     </Select>
                 </FormControl>
                  </div>
-                 <Button style={{ backgroundColor: '#0100ff70', marginTop: '1rem' }} variant="contained">Delete All Todoes</Button>
+                 <Button id="deleteTodo" style={{ backgroundColor: '#0100ff70', marginTop: '1rem' }} variant="contained">Delete All Todoes</Button>
             </main>
           
 

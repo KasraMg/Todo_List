@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1rem 4rem;
   text-align: center;
 }
 input::placeholder{
@@ -10,6 +10,21 @@ input::placeholder{
 @media (max-width:500px) {
   #todo{
     right: 5px;
+  }
+}
+@media (max-width:584px) {
+  #deleteTodo{
+   width: 100%;
+   margin-top:2rem !important;
+  }#todoesMain{
+    justify-content: center !important;
+  }
+}
+@media (max-width:767px) {
+  #root{
+    padding: 1rem;
+  }aside{
+    display: none !important;
   }
 }
 p {
