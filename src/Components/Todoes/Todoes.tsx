@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { makeStyles } from '@mui/styles';
 import { Button } from '@mui/material'
 import Todo from "../Todo/Todo";
+import { useContext } from 'react'
+import  {TodolistContext} from '../../Context/TodolistContext'
 
 const useStyles = makeStyles({
     formControl: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles({
 export default function Todoes() {
     const classes = useStyles();
     const [filter, setFilter] = useState<String>('All_Todoes');
-
+    const context = useContext(TodolistContext)
 
 
     return (
@@ -47,15 +49,13 @@ export default function Todoes() {
           
 
             <Grid container  flexDirection={'row-reverse'} className='topbar' alignItems={'center'} spacing={5}>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Todo />
+              {context?.todo?.map(data=>(
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Todo {...data} />
                 </Grid>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Todo />
-                </Grid>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Todo />
-                </Grid>
+             ) )}
+              
+                  
 
             </Grid>
 

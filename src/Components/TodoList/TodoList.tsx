@@ -5,7 +5,7 @@ import { makeStyles } from '@mui/styles';
 import { Button } from '@mui/material'
 import './TodoList.css' 
 import Todoes from '../Todoes/Todoes'; 
-import colors from '../../data'
+import colors from '../../assets/data'
 import { useState,useContext } from 'react'
 import { TodolistContext } from '../../Context/todolistContext';
 
