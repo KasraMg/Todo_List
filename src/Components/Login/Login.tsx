@@ -4,6 +4,10 @@ import './Login.css'
 import { BiSolidUser } from 'react-icons/bi' 
 import { AiFillLock } from 'react-icons/ai' 
 import { Link } from 'react-router-dom'
+import { useFormik } from "formik";
+import swal from 'sweetalert';
+import registerSchema from '../../Validations/rules';
+
 const useStyles = makeStyles({
   login_icon:{
     position:'relative',
@@ -109,26 +113,90 @@ const useStyles = makeStyles({
 });
 
 
-export default function Login() {
+ const Login= ():React.ReactElement=>{
   const classes = useStyles();
+
+
+  
+
+
+  const loginform = useFormik({
+    initialValues: { password: "", email: "", acceptTerms: false, },
+    validationSchema: registerSchema,
+    onSubmit: (data) => {
+      console.log(JSON.stringify(data, null, 2));
+    },
+  });
+
+  
+  const formClickHandle = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+   
+    if (loginform.values.email.length == 0) {
+      swal({
+          title: 'Please Type Your Email',
+          icon: 'error',
+          
+      })
+    }
+    else if (loginform.values.password.length == 0) {
+      swal({
+          title: 'Please Type Your Password',
+          icon: 'error',
+          
+      })
+   
+    }  else if (loginform.errors.email) {
+        swal({
+            title: loginform.errors.email && loginform.errors.email,
+            icon: 'error',
+            
+        })
+    } else if (loginform.errors.password) {
+        swal({
+            title: loginform.errors.password && loginform.errors.password,
+            icon: 'error',
+            
+        })
+    }   else{
+       swal({
+        title: 'Email Was Send',
+        icon: 'success',
+        
+    }) 
+    } 
+
+
+
+}
+
   return (
     <Container>
       <div id='screen' className={classes.screen}>
         <div className={classes.screen__content}>
+
           <form className={classes.login}>
             <div className={classes.login__field}>
               <BiSolidUser className={classes.login_icon}/>
-              <input type="text" className={classes.login__input} placeholder="User name / Email" />
+              <input  
+                name="email"
+                value={loginform.values.email}
+                onChange={loginform.handleChange}
+                onBlur={loginform.handleBlur} type="text" className={classes.login__input} placeholder="User Email" />
             </div>
             <div className={classes.login__field}>
              <AiFillLock className={classes.login_icon}/>
-              <input type="password" className={classes.login__input} placeholder="Password" />
+              <input name="password"
+                value={loginform.values.password}
+                onChange={loginform.handleChange}
+                onBlur={loginform.handleBlur} type="password" className={classes.login__input} placeholder="Password" />
             </div>
-            <button className={classes.login__submit}>
-              <span className="button__text">Log In Now</span>
+            <button onClick={formClickHandle} className={classes.login__submit}>
+              <span   className="button__text">Log In Now</span>
               <i className="button__icon fas fa-chevron-right"></i>
             </button>
           </form>
+
           <div>
             <Link className={classes.register} to={'/Register'}>Register</Link>
              
@@ -144,3 +212,4 @@ export default function Login() {
     </Container>
   )
 }
+export default  Login 

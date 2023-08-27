@@ -4,7 +4,7 @@ import { AiFillDelete, AiOutlineCheck } from 'react-icons/ai'
 import { RxUpdate } from 'react-icons/rx'
 import { sub } from 'date-fns';
  import TimeAgo from '../TimeAgo'
- import { Todo as todoType } from '../../assets/todo.types';
+ import { Todo as todoType } from '../../assets/todo.Types';
  const useStyles = makeStyles({
         todo: { 
         width:'90%',

@@ -4,6 +4,9 @@ import './Register.css'
 import { BiSolidUser } from 'react-icons/bi' 
 import { AiFillLock } from 'react-icons/ai' 
 import { Link } from 'react-router-dom'
+import registerSchema from '../../Validations/rules';
+import { useFormik } from 'formik';
+import swal from 'sweetalert';
 const useStyles = makeStyles({
   Register_icon:{
     position:'relative',
@@ -112,6 +115,77 @@ const useStyles = makeStyles({
 
 export default function Register() {
   const classes = useStyles();
+
+  const registerform = useFormik({
+    initialValues: { password: "", email: "", acceptTerms: false, reapetPassword:"" },
+    validationSchema: registerSchema,
+    onSubmit: (data) => {
+      console.log(JSON.stringify(data, null, 2));
+    },
+  });
+
+  const formClickHandle = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+   
+    if (registerform.values.email.length == 0) {
+      swal({
+          title: 'Please Type Your Email',
+          icon: 'error',
+          
+      })
+    }
+    else if (registerform.values.password.length == 0) {
+      swal({
+          title: 'Please Type Your Password',
+          icon: 'error',
+          
+      })
+   
+    } else if(registerform.values.reapetPassword.length == 0){
+      swal({
+        title: 'Please Type Your Password',
+        icon: 'error',
+        
+    })
+    } 
+    else if (registerform.errors.email) {
+        swal({
+            title: registerform.errors.email && registerform.errors.email,
+            icon: 'error',
+            
+        })
+    } 
+    else if (registerform.errors.password) {
+      swal({
+          title: registerform.errors.email && registerform.errors.email,
+          icon: 'error',
+          
+      })
+  } 
+    else if (registerform.errors.reapetPassword) {
+        swal({
+            title: registerform.errors.reapetPassword && registerform.errors.reapetPassword,
+            icon: 'error',
+            
+        })
+    } else if(registerform.values.reapetPassword !== registerform.values.password){
+      swal({
+        title: 'Passwords is not same !',
+        icon: 'error',
+        
+    })
+    }  else{
+       swal({
+        title: 'Email Was Send',
+        icon: 'success',
+        
+    }) 
+    } 
+
+
+
+}
+
   return (
     <Container> 
       <div id='screen' className={classes.screen}>
@@ -119,17 +193,26 @@ export default function Register() {
           <form className={classes.Register}>
             <div className={classes.Register__field}>
               <BiSolidUser className={classes.Register_icon}/>
-              <input type="text" className={classes.Register__input} placeholder="User name / Email" />
+              <input  name="email"
+                value={registerform.values.email}
+                onChange={registerform.handleChange}
+                onBlur={registerform.handleBlur} type="text" className={classes.Register__input} placeholder=" Email" />
             </div>
             <div className={classes.Register__field}>
              <AiFillLock className={classes.Register_icon}/>
-              <input type="password" className={classes.Register__input} placeholder="Password" />
+              <input name="password"
+                value={registerform.values.password}
+                onChange={registerform.handleChange}
+                onBlur={registerform.handleBlur} type="password" className={classes.Register__input} placeholder="Password" />
             </div>
             <div className={classes.Register__field}>
              <AiFillLock className={classes.Register_icon}/>
-              <input type="password" className={classes.Register__input} placeholder="Repeat Password" />
+              <input name="reapetPassword"
+                value={registerform.values.reapetPassword}
+                onChange={registerform.handleChange}
+                onBlur={registerform.handleBlur} type="password" className={classes.Register__input} placeholder="Repeat Password" />
             </div>
-            <button className={classes.Register__submit}>
+            <button onClick={formClickHandle} className={classes.Register__submit}>
               <span className="button__text">Register Now</span>
               <i className="button__icon fas fa-chevron-right"></i>
             </button>

@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { Todo,Color } from "../assets/todo.types";
+import { Todo,Color } from "../assets/todo.Types";
 
 
 type AuthContextProviderProps = {

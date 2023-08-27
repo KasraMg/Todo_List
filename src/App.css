@@ -30,3 +30,20 @@ input::placeholder{
 p {
   font-family: cursive;
 }
+.swal-footer{
+  text-align: center;
+}
+.swal-button {
+  background-color: #3a6579 !important;
+}
+.swal-title{
+  font-family: cursive;
+}
+input:-webkit-autofill,
+     input:-webkit-autofill:focus {
+         transition: background-color 600000s 0s, color 600000s 0s;
+     }
+
+     input[data-autocompleted] {
+         background-color: transparent !important;
+     }
