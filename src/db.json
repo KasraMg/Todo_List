@@ -1,0 +1,92 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "amin",
+      "age": 23
+    },
+    {
+      "id": 2,
+      "name": "sasan",
+      "age": 25
+    },
+    {
+      "id": 3,
+      "name": "zahra",
+      "age": 18
+    },
+    {
+      "name": "Asgar",
+      "age": "54",
+      "id": 4
+    },
+    {
+      "name": "amirali",
+      "age": "26",
+      "id": 5
+    },
+    {
+      "name": "Mobin",
+      "age": "16",
+      "id": 6
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "content": "I've heard good things.",
+      "date": 1,
+      "bg": "red",
+      "isComplate": true
+    }, 
+    {
+      "id": 3,
+      "content": "ededed",
+      "date": 1,
+      "bg": "#0100ff70",
+      "isComplate": false
+    },
+    {
+      "id": 4,
+      "content": "wddwdwdw",
+      "date": 1,
+      "bg": "yellow",
+      "isComplate": false
+    },
+    {
+      "id": 5,
+      "content": "3e3e",
+      "date": 1,
+      "bg": "rgb(50 146 214)",
+      "isComplate": false
+    },
+    {
+      "id": 6,
+      "content": "dwdwdw",
+      "date": 0,
+      "bg": "#0100ff70",
+      "isComplate": false
+    },
+    {
+      "id": 7,
+      "content": "dwdwdw",
+      "date": 0,
+      "bg": "green",
+      "isComplate": false
+    },
+    {
+      "id": 8,
+      "content": "dede",
+      "date": 0,
+      "bg": "#0100ff70",
+      "isComplate": false
+    },
+    {
+      "id": 9,
+      "content": "xwxsx",
+      "date": 0,
+      "bg": "#0100ff70",
+      "isComplate": false
+    }
+  ]
+}
