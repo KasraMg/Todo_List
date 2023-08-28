@@ -5,6 +5,7 @@ import { Button } from '@mui/material'
 import Todo from "../Todo/Todo";
 import { useContext } from 'react'
 import  {TodolistContext} from '../../Context/TodolistContext'
+import swal from "sweetalert";
 
 const useStyles = makeStyles({
     formControl: {
@@ -17,6 +18,12 @@ const useStyles = makeStyles({
         justifyContent:'space-between',
         alignItems:'baseline',
         flexWrap:'wrap'
+    },
+    emptyTodo:{
+        textAlign:'center',
+       display:'block',
+       margin:'0 auto',
+        marginTop:'4rem' 
     }
 });
 export default function Todoes() {
@@ -24,7 +31,23 @@ export default function Todoes() {
     const [filter, setFilter] = useState<String>('All_Todoes');
     const context = useContext(TodolistContext)
 
-
+    const deleteAllTodosHandler=()=>{
+        swal({
+            title:'Do you want to delete all todos?',
+            icon:'success',
+            buttons:['no','yes']
+        }).then(result=>{
+           if (result) {
+            context?.todo?.map(async(data)=>{
+                const res = await fetch(`http://localhost:4000/todos/${data.id}`,{
+                    method:'DELETE'
+                   
+                  }); 
+            })
+            context?.setTodos([])
+           }
+        })
+     }
     return (
         <div style={{ marginBottom: '2rem' }}>
             <main id="todoesMain" className={classes.main}>
@@ -44,7 +67,7 @@ export default function Todoes() {
                     </Select>
                 </FormControl>
                  </div>
-                 <Button id="deleteTodo" style={{ backgroundColor: '#0100ff70', marginTop: '1rem' }} variant="contained">Delete All Todoes</Button>
+                 <Button onClick={deleteAllTodosHandler} id="deleteTodo" style={{ backgroundColor: '#0100ff70', marginTop: '1rem' }} variant="contained">Delete All Todoes</Button>
             </main>
           
 
@@ -55,7 +78,12 @@ export default function Todoes() {
                 </Grid>
              ) )}
               
-                  
+                  {context?.todo?.length == 0 &&(
+                    <div className={classes.emptyTodo}>
+                        <img width={127} src="/icons8-todo-list-100.png" alt="" />
+                    <p>Please make a todo :(((</p>
+                    </div>
+                  )}
 
             </Grid>
 

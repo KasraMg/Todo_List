@@ -27,25 +27,7 @@ export const TodolistProvider = ({ children }: AuthContextProviderProps) => {
  
 
 
-const [todo,setTodos]=useState <Todo[] | null>([
-  {
-  id: 1, 
-  content: "I've heard good things.",
-  date: 1,
-  bg:'red',
-  isComplate:true
-  },
-  {
-    id: 2, 
-    content: "I've heard good things.",
-    date: 1,
-    bg:'blue',
-    isComplate:false
-    },
-]
-  
-  
-)
+const [todo,setTodos]=useState <Todo[] | null>(null)
 useEffect(() => {
   (async () => {
     const res = await fetch("http://localhost:4000/todos");

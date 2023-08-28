@@ -10,6 +10,7 @@ import { useState,useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
 import { Color,Todo } from '../../assets/todo.Types';
 import swal from 'sweetalert';
+
 const useStyles = makeStyles({
   input: {
     borderRadius: '10px',
@@ -83,13 +84,14 @@ const createTodo=async()=>{
   }); 
   console.log(res);
   if (res.status == 201) {
+    updateTodos() 
     swal({
       title:'Todo was added',
       icon:'success'
     })
   }
  
-  updateTodos() 
+ 
   setTodoInput("")
   
   

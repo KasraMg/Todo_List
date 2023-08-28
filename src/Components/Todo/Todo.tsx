@@ -1,10 +1,13 @@
  
 import { makeStyles } from '@mui/styles'; 
-import { AiFillDelete, AiOutlineCheck } from 'react-icons/ai'
-import { RxUpdate } from 'react-icons/rx'
+import { AiFillDelete, AiOutlineCheck } from 'react-icons/ai' 
 import { sub } from 'date-fns';
  import TimeAgo from '../TimeAgo'
  import { Todo as todoType } from '../../assets/todo.Types';
+import swal from 'sweetalert';
+import { useContext } from 'react'
+import { TodolistContext } from '../../Context/TodolistContext';
+
  const useStyles = makeStyles({
         todo: { 
         width:'90%',
@@ -56,8 +59,41 @@ import { sub } from 'date-fns';
       
 export default function Todo(props:todoType) {
 
-      
+    const context=useContext(TodolistContext)
     const classes = useStyles(); 
+
+
+    const updateTodos=async()=>{
+        const res = await fetch("http://localhost:4000/todos");
+        const data = (await res.json()) as todoType[];
+        context?.setTodos(data);
+      }
+
+    const deleteTodoHandler=async()=>{
+        swal({
+            title:'Do you want to delete this todo?',
+            icon:'success',
+            buttons:['no','yes']
+        }).then(async(result)=>{
+           if (result) {
+            const res = await fetch(`http://localhost:4000/todos/${props.id}`,{
+            method:'DELETE'
+           
+          }); 
+          console.log(res);
+          if (res.status == 200) {
+            updateTodos()
+            swal({
+              title:'Todo was Delete',
+              icon:'success'
+            })
+          }
+             
+           }
+        })
+        
+    }
+
     return (
         <section style={{backgroundColor:props.bg}} id='todo' className={props.isComplate ? `${classes.todo} ${classes.todoComplate}` : `${classes.todo}`}>
            <p className={classes.text}>{props.content}</p>
@@ -68,14 +104,12 @@ export default function Todo(props:todoType) {
             <div>
             {props.isComplate ?(
                 <>
-                 <AiFillDelete  style={{marginRight:'.3rem'}}/>
-                 <RxUpdate  style={{marginRight:'.3rem'}}/>
+                 <AiFillDelete  style={{marginRight:'.3rem'}}/> 
                  <AiOutlineCheck />
                 </>
             ):(
                 <>
-                <AiFillDelete className={classes.icon} style={{marginRight:'.3rem'}}/>
-                <RxUpdate className={classes.icon} style={{marginRight:'.3rem'}}/>
+                <AiFillDelete onClick={deleteTodoHandler} className={classes.icon} style={{marginRight:'.3rem'}}/> 
                 <AiOutlineCheck className={classes.icon}/>
                 </>
             )}

@@ -39,11 +39,13 @@ p {
 .swal-title{
   font-family: cursive;
 }
-input:-webkit-autofill,
-     input:-webkit-autofill:focus {
+.swal-button--cancel{
+  color: white;
+}
+input:-webkit-autofill, input:-webkit-autofill:focus {
          transition: background-color 600000s 0s, color 600000s 0s;
-     }
+ }
 
-     input[data-autocompleted] {
+ input[data-autocompleted] {
          background-color: transparent !important;
-     }
+   }
