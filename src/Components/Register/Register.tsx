@@ -124,7 +124,7 @@ export default function Register() {
     },
   });
 
-  const formClickHandle = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const formClickHandle =async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
    
     if (registerform.values.email.length == 0) {
@@ -174,12 +174,32 @@ export default function Register() {
         icon: 'error',
         
     })
-    }  else{
-       swal({
-        title: 'Email Was Send',
-        icon: 'success',
-        
-    }) 
+    }  else {
+
+      const newUser={
+        id:crypto.randomUUID(),
+        email:registerform.values.email,
+        pass:registerform.values.password,
+        token:crypto.randomUUID()
+      }
+
+      const res = await fetch("http://localhost:4000/users",{
+        method:'POST',
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify(newUser)
+      }); 
+      console.log(res);
+      if (res.status == 201) {  
+        swal({
+          title: 'Register SuccessFull !',
+          icon: 'success',
+          
+      }) 
+      }
+
+      
     } 
 
 

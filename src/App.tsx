@@ -2,7 +2,7 @@ import Header from './Components/Header/Header'
 import './App.css' 
 import  routes from './routes'
 import { useRoutes } from 'react-router-dom'
-import { TodolistProvider } from './Context/todolistContext'
+import { TodolistProvider } from './Context/TodolistContext'
 
 
 function App() {

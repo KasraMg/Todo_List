@@ -1,12 +1,12 @@
 import { FormControl, Grid, InputLabel, MenuItem, Select } from "@mui/material";
-import { useState } from 'react' 
+import { useEffect, useState } from 'react' 
 import { makeStyles } from '@mui/styles';
 import { Button } from '@mui/material'
 import Todo from "../Todo/Todo";
 import { useContext } from 'react'
 import  {TodolistContext} from '../../Context/TodolistContext'
 import swal from "sweetalert";
-
+import { Todo as TodoType } from '../../assets/todo.Types'
 const useStyles = makeStyles({
     formControl: {
         display: 'flex',
@@ -29,7 +29,8 @@ const useStyles = makeStyles({
 export default function Todoes() {
     const classes = useStyles();
     const [filter, setFilter] = useState<String>('All_Todoes');
-    const context = useContext(TodolistContext)
+    const [todos,seNewTodos]=useState<TodoType[]>([])
+    const context = useContext(TodolistContext) 
 
     const deleteAllTodosHandler=()=>{
         swal({
@@ -47,7 +48,49 @@ export default function Todoes() {
             context?.setTodos([])
            }
         })
-     }
+     } 
+ 
+       useEffect(()=>{
+        fetch("http://localhost:4000/todos")
+        .then(res=>res.json())
+        .then(data=>{
+            seNewTodos(data) 
+        })
+       },[])
+      
+     useEffect(() => {
+      
+        if (todos) {
+           switch (filter) {
+        case 'All_Todoes':{
+            const AllTodos=todos  
+            context?.setTodos(AllTodos as TodoType[])
+            break
+        }
+        case 'Complate_Todoes':{
+            const complateTodos=todos.filter(data=>{
+                return data.isComplate  
+            }) 
+            context?.setTodos(complateTodos as TodoType[])
+            break
+        } 
+        case 'UnComplate_Todoes':{
+            const UnComplateTodos=todos.filter(data=>{
+                return !data.isComplate 
+            })  
+            context?.setTodos(UnComplateTodos as TodoType[])
+            break
+        }  
+        default:throw new Error("this case not found");
+            
+     
+        }   
+        }
+        
+     
+      
+     }, [filter])
+     
     return (
         <div style={{ marginBottom: '2rem' }}>
             <main id="todoesMain" className={classes.main}>
