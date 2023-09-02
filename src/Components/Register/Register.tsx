@@ -3,10 +3,14 @@ import { makeStyles } from '@mui/styles';
 import './Register.css'
 import { BiSolidUser } from 'react-icons/bi' 
 import { AiFillLock } from 'react-icons/ai' 
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import registerSchema from '../../Validations/rules';
 import { useFormik } from 'formik';
 import swal from 'sweetalert';
+import {useContext} from 'react'
+import { TodolistContext } from '../../Context/TodolistContext';
+
+
 const useStyles = makeStyles({
   Register_icon:{
     position:'relative',
@@ -15,7 +19,7 @@ const useStyles = makeStyles({
    screen :{		
     background:' linear-gradient(90deg, #5D54A4, #7C78B8)',	
     position: 'relative',
-    height:' 600px',
+    height:' 640px',
     width:' 360px',
     boxShadow: '0px 0px 24px #5C5696',
     margin:'0px auto'
@@ -115,9 +119,10 @@ const useStyles = makeStyles({
 
 export default function Register() {
   const classes = useStyles();
-
+  const context=useContext(TodolistContext)
+  const navigate = useNavigate()
   const registerform = useFormik({
-    initialValues: { password: "", email: "", acceptTerms: false, reapetPassword:"" },
+    initialValues: { password: "", email: "", name: "", reapetPassword:"" },
     validationSchema: registerSchema,
     onSubmit: (data) => {
       console.log(JSON.stringify(data, null, 2));
@@ -134,6 +139,14 @@ export default function Register() {
           
       })
     }
+    else if (registerform.values.name.length == 0) {
+      swal({
+          title: 'Please Type Your Name',
+          icon: 'error',
+          
+      })
+   
+    } 
     else if (registerform.values.password.length == 0) {
       swal({
           title: 'Please Type Your Password',
@@ -141,7 +154,8 @@ export default function Register() {
           
       })
    
-    } else if(registerform.values.reapetPassword.length == 0){
+    } 
+    else if(registerform.values.reapetPassword.length == 0){
       swal({
         title: 'Please Type Your Password',
         icon: 'error',
@@ -155,32 +169,41 @@ export default function Register() {
             
         })
     } 
+    else if (registerform.errors.name) {
+      swal({
+          title: registerform.errors.name && registerform.errors.name,
+          icon: 'error',
+          
+      })
+  } 
     else if (registerform.errors.password) {
       swal({
           title: registerform.errors.email && registerform.errors.email,
           icon: 'error',
           
       })
-  } 
+    } 
     else if (registerform.errors.reapetPassword) {
         swal({
             title: registerform.errors.reapetPassword && registerform.errors.reapetPassword,
             icon: 'error',
             
         })
-    } else if(registerform.values.reapetPassword !== registerform.values.password){
+    }
+     else if(registerform.values.reapetPassword !== registerform.values.password){
       swal({
         title: 'Passwords is not same !',
         icon: 'error',
         
     })
-    }  else {
+    } 
+     else {
 
       const newUser={
         id:crypto.randomUUID(),
         email:registerform.values.email,
         pass:registerform.values.password,
-        token:crypto.randomUUID()
+        name:registerform.values.name
       }
 
       const res = await fetch("http://localhost:4000/users",{
@@ -191,11 +214,23 @@ export default function Register() {
         body:JSON.stringify(newUser)
       }); 
       console.log(res);
+      
       if (res.status == 201) {  
+        context?.setUserInfos({
+          email:registerform.values.email,  
+          pass:registerform.values.password ,
+          name:registerform.values.name,
+          id:newUser.id
+        })
+        const token =newUser.id
+        context?.setTodos(null)
+        localStorage.setItem("user", JSON.stringify({ token }));
         swal({
           title: 'Register SuccessFull !',
           icon: 'success',
           
+      }).then(res=>{
+        navigate('/')
       }) 
       }
 
@@ -211,12 +246,19 @@ export default function Register() {
       <div id='screen' className={classes.screen}>
         <div className={classes.screen__content}>
           <form className={classes.Register}>
+          <div className={classes.Register__field}>
+              <BiSolidUser className={classes.Register_icon}/>
+              <input  name="name"
+                value={registerform.values.name}
+                onChange={registerform.handleChange}
+                onBlur={registerform.handleBlur} type="text" className={classes.Register__input} placeholder=" Name" />
+            </div>
             <div className={classes.Register__field}>
               <BiSolidUser className={classes.Register_icon}/>
               <input  name="email"
                 value={registerform.values.email}
                 onChange={registerform.handleChange}
-                onBlur={registerform.handleBlur} type="text" className={classes.Register__input} placeholder=" Email" />
+                onBlur={registerform.handleBlur} type="email" className={classes.Register__input} placeholder=" Email" />
             </div>
             <div className={classes.Register__field}>
              <AiFillLock className={classes.Register_icon}/>

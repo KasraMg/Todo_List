@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Todo,Color } from "../assets/todo.Types";
+import { Todo,Color,User } from "../assets/todo.Types";
 
 
 type AuthContextProviderProps = {
@@ -7,11 +7,16 @@ type AuthContextProviderProps = {
 };
 
  
+ 
 type TodolistContextType = {
-    color: Color | null;
+  color: Color | null;
   setcolor: (color: Color | null) => void;
   todo:Todo[] | null; 
-  setTodos:  React.Dispatch<React.SetStateAction<Todo[] | null>>
+  setTodos:  React.Dispatch<React.SetStateAction<Todo[] | null>>,
+  filter:String,
+  setFilter:  React.Dispatch<React.SetStateAction<String>>,
+  userInfos:User | null ,
+  setUserInfos:React.Dispatch<React.SetStateAction<User | null>>,
 };
 
 export const TodolistContext = createContext<TodolistContextType | null>(null);
@@ -24,20 +29,88 @@ export const TodolistProvider = ({ children }: AuthContextProviderProps) => {
     }
   ); 
  
- 
+ const [userInfos,setUserInfos]=useState<User | null >(null) 
+const [todo,setTodos]=useState <Todo[] | null>(null) 
+const [filter, setFilter] = useState<String>('All_Todoes');
 
-
-const [todo,setTodos]=useState <Todo[] | null>(null)
 useEffect(() => {
-  (async () => {
-    const res = await fetch("http://localhost:4000/todos");
-    const data = (await res.json()) as Todo[];
-    setTodos(data);
-  })();
+  
+  const localStorageData = JSON.parse(localStorage.getItem("user") as string)
+console.log(localStorageData);
+
+  if (localStorageData) {
+    fetch(`http://localhost:4000/users?id=${localStorageData.token}`)
+    .then(res=>res.json())
+    .then(data=>{ 
+      if (data) {
+        console.log(data); 
+        setUserInfos(data[0])
+      }
+    })
+
+
+    fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      if (data) {
+        setTodos(data)
+        console.log(data);
+      }
+    })
+
+  }else{
+    fetch(`http://localhost:4000/firstTodos`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      if (data) {
+        setTodos(data)
+        console.log(data);
+      }
+    })
+  }
 }, []);
 
+useEffect(() => {
+  const localStorageData = JSON.parse(localStorage.getItem("user") as string)
+
+  if (localStorageData) {
+    fetch(`http://localhost:4000/users?id=${localStorageData.token}`)
+    .then(res=>res.json())
+    .then(data=>{ 
+      if (data) {
+        setUserInfos(data[0])
+      }
+    })
+
+
+    fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      if (data) {
+        console.log(data);
+        
+        setTodos(data)
+      }
+    })
+
+  }else{
+    fetch(`http://localhost:4000/firstTodos`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+      if (data) {
+        setTodos(data)
+        console.log(data);
+      }
+    })
+  }
+}, [])
+
   return (
-    <TodolistContext.Provider value={{ color, setcolor,todo,setTodos }}>
+    <TodolistContext.Provider value={{ color, setcolor,todo,setTodos,filter, setFilter,userInfos,setUserInfos}}>
       {children}
     </TodolistContext.Provider>
   );

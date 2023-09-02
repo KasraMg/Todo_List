@@ -129,7 +129,7 @@ const useStyles = makeStyles({
   });
 
   
-  const formClickHandle = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const formClickHandle =async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
    
     if (loginform.values.email.length == 0) {
@@ -159,6 +159,10 @@ const useStyles = makeStyles({
             
         })
     }   else{
+      const res = await fetch(`http://localhost:4000/users?email=${loginform.values.email}`)
+      const data=await res.json()
+      console.log(data);
+      
        swal({
         title: 'Email Was Send',
         icon: 'success',

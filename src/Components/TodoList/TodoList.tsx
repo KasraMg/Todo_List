@@ -10,7 +10,7 @@ import { useState,useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
 import { Color,Todo } from '../../assets/todo.Types';
 import swal from 'sweetalert';
-
+import { useNavigate } from 'react-router-dom';
 const useStyles = makeStyles({
   input: {
     borderRadius: '10px',
@@ -48,15 +48,18 @@ export default function TodoList() {
   const context=useContext(TodolistContext)
   const [allColors,setAllcolors]=useState<Color[]>(colors)
   const [todoInput,setTodoInput]=useState<string>()
-
+  const navigate=useNavigate()
 const selectColor=(obj:Color)=>{
   context?.setcolor(obj)
 }
 
+const localStorageData = JSON.parse(localStorage.getItem("user") as string)
 const updateTodos=async()=>{
-  const res = await fetch("http://localhost:4000/todos");
-  const data = (await res.json()) as Todo[];
-  context?.setTodos(data);
+  if (localStorageData) {
+    const res = await fetch(`http://localhost:4000/users/${localStorageData.token}/todos`);
+const data = (await res.json()) as Todo[];
+context?.setTodos(data);
+}
 }
 
 const todoChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -65,17 +68,19 @@ const todoChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
 
 const createTodo=async()=>{
 
- let newId= context?.todo && context.todo.length + 1
-
+ let newId= crypto.randomUUID()
+ const localStorageData = JSON.parse(localStorage.getItem("user") as string)
+ 
+if (localStorageData) {
   let newTodo={
-    id: newId as number, 
+    id: newId , 
     content: todoInput as string,
     date: 0,
     bg:context?.color?.name as string,
-    isComplate:false
+    isComplate:false,
+    userId:localStorageData ? localStorageData.token: null
   }
-
-  const res = await fetch("http://localhost:4000/todos",{
+    const res = await fetch("http://localhost:4000/todos",{
     method:'POST',
     headers:{
       "Content-Type": "application/json"
@@ -90,18 +95,28 @@ const createTodo=async()=>{
       icon:'success'
     })
   }
+}else{
+  swal({
+
+    title:'please login/register in site',
+    icon:'warning',
+    buttons:['lets go to login','stay']
+  }).then(res=>{
+    if (!res) {
+        navigate('/Login')
+    }
+  
+  })
+}
+ 
+
  
  
   setTodoInput("")
   
   
 
-  // context?.setTodos((prev: Todo[] | null) => {
-  //   if (prev) {
-  //   return [...prev, newTodo]
-  //   }
-  //   return [newTodo]
-  //   })
+  
 
  
     

@@ -7,6 +7,7 @@ import { sub } from 'date-fns';
 import swal from 'sweetalert';
 import { useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
+import { useNavigate } from 'react-router-dom';
 
  const useStyles = makeStyles({
         todo: { 
@@ -57,16 +58,21 @@ import { TodolistContext } from '../../Context/TodolistContext';
    
       
       
-export default function Todo(props:todoType) {
-
+export default function Todo(props:todoType ) {
+ 
+    const navigate=useNavigate()
     const context=useContext(TodolistContext)
     const classes = useStyles(); 
 
-
+ 
+    const localStorageData = JSON.parse(localStorage.getItem("user") as string)
     const updateTodos=async()=>{
-        const res = await fetch("http://localhost:4000/todos");
+        if (localStorageData) {
+        const res = await fetch(`http://localhost:4000/users/${localStorageData.token}/todos`);
         const data = (await res.json()) as todoType[];
         context?.setTodos(data);
+        }
+   
       }
 
     const deleteTodoHandler=async()=>{
@@ -94,6 +100,52 @@ export default function Todo(props:todoType) {
         
     }
 
+    const complateTodoHandler=async()=>{ 
+   
+        swal({
+            title: props.isComplate ? 'Do you want to unComplate this todo?' : 'Do you want to complate this todo?',
+            icon:'success',
+            buttons:['no','yes']
+        }).then(async(result)=>{
+            if (result) {
+
+               const newTodo={
+                id: props.id,
+                content: props.content,
+                date: props.date,
+                bg: props.bg,
+                isComplate: !props.isComplate,
+                userId:localStorageData ? localStorageData.token: null
+                }
+
+             const res = await fetch(`http://localhost:4000/todos/${props.id}`,{
+             method:'PUT',
+             headers:{
+                "Content-Type": "application/json"
+              },
+              body:JSON.stringify(newTodo)
+           }) 
+           context?.setFilter('All_Todoes')
+           updateTodos()   
+           console.log(res);
+           
+        }
+    })
+    }
+
+    const signSwal=()=>{
+        swal({
+
+            title:'please login/register in site',
+            icon:'warning',
+            buttons:['lets go to login','stay']
+          }).then(res=>{
+            if (!res) {
+                navigate('/Login')
+            }
+          
+          })
+    }
     return (
         <section style={{backgroundColor:props.bg}} id='todo' className={props.isComplate ? `${classes.todo} ${classes.todoComplate}` : `${classes.todo}`}>
            <p className={classes.text}>{props.content}</p>
@@ -101,19 +153,20 @@ export default function Todo(props:todoType) {
            <div className={classes.todoFooter}>
            <TimeAgo timestamp={sub(new Date(), { minutes: props.date }).toISOString()} />
            
-            <div>
-            {props.isComplate ?(
-                <>
-                 <AiFillDelete  style={{marginRight:'.3rem'}}/> 
-                 <AiOutlineCheck />
-                </>
-            ):(
-                <>
+            <div> 
+                {localStorageData ?(
+                    <>
                 <AiFillDelete onClick={deleteTodoHandler} className={classes.icon} style={{marginRight:'.3rem'}}/> 
-                <AiOutlineCheck className={classes.icon}/>
-                </>
-            )}
-             
+                <AiOutlineCheck onClick={complateTodoHandler} className={classes.icon}/>
+                    </>
+                ):(
+                    <>
+                <AiFillDelete onClick={signSwal} className={classes.icon} style={{marginRight:'.3rem'}}/> 
+                <AiOutlineCheck onClick={signSwal} className={classes.icon}/>
+                    </>
+                )}
+            
+                  
             </div>
                 
            </div>

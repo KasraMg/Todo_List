@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import  {TodolistContext} from '../../Context/TodolistContext'
 import swal from "sweetalert";
 import { Todo as TodoType } from '../../assets/todo.Types'
+import { useNavigate } from "react-router-dom";
 const useStyles = makeStyles({
     formControl: {
         display: 'flex',
@@ -28,12 +29,17 @@ const useStyles = makeStyles({
 });
 export default function Todoes() {
     const classes = useStyles();
-    const [filter, setFilter] = useState<String>('All_Todoes');
-    const [todos,seNewTodos]=useState<TodoType[]>([])
+    const navigate=useNavigate()
+    const [todos,setNewTodos]=useState<TodoType[]>([]) 
     const context = useContext(TodolistContext) 
 
+    
+   const localStorageData = JSON.parse(localStorage.getItem("user") as string) 
+   
     const deleteAllTodosHandler=()=>{
-        swal({
+        if (localStorageData) {
+            if (context?.todo?.length) {
+                 swal({
             title:'Do you want to delete all todos?',
             icon:'success',
             buttons:['no','yes']
@@ -42,55 +48,111 @@ export default function Todoes() {
             context?.todo?.map(async(data)=>{
                 const res = await fetch(`http://localhost:4000/todos/${data.id}`,{
                     method:'DELETE'
-                   
                   }); 
             })
             context?.setTodos([])
            }
-        })
+        }) 
+            }else{
+                swal({
+                title:'there is no todo for delete',
+                icon:'error', 
+              })
+            }
+           
+        }else{
+            swal({ 
+                title:'please login/register in site',
+                icon:'warning',
+                buttons:['lets go to login','stay']
+              }).then(res=>{
+                if (!res) {
+                    navigate('/Login')
+                } 
+              })
+        }
+       
      } 
- 
+     
+     const changeFilterStatues:any= (e:string)=>{
+        if (localStorageData) {
+            context?.setFilter(e)
+        }else{
+            swal({ 
+                title:'please login/register in site',
+                icon:'warning',
+                buttons:['lets go to login','stay']
+              }).then(res=>{
+                if (!res) {
+                    navigate('/Login')
+                } 
+              })
+        }
+     }
+   
        useEffect(()=>{
-        fetch("http://localhost:4000/todos")
+         if (localStorageData) {
+                fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+                 .then(res=>res.json())
+                .then(data=>{
+                
+                if (data) {
+                    setNewTodos(data)
+                }
+                })
+           
+        } 
+       
+       
+       },[context?.todo ])
+      
+     
+       useEffect(()=>{
+        if (localStorageData) {
+        fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
         .then(res=>res.json())
         .then(data=>{
-            seNewTodos(data) 
+            setNewTodos(data) 
         })
+        }
+      
        },[])
-      
+
      useEffect(() => {
-      
-        if (todos) {
-           switch (filter) {
-        case 'All_Todoes':{
-            const AllTodos=todos  
-            context?.setTodos(AllTodos as TodoType[])
-            break
-        }
-        case 'Complate_Todoes':{
-            const complateTodos=todos.filter(data=>{
-                return data.isComplate  
-            }) 
-            context?.setTodos(complateTodos as TodoType[])
-            break
+
+        if (localStorageData) {
+            if (todos) {
+                switch (context?.filter) {
+             case 'All_Todoes':{
+                 const AllTodos=todos  
+                 context?.setTodos(AllTodos as TodoType[])
+                 break
+             }
+             case 'Complate_Todoes':{
+                 const complateTodos=todos.filter(data=>{
+                     return data.isComplate  
+                 }) 
+                 context?.setTodos(complateTodos as TodoType[])
+                 break
+             } 
+             case 'UnComplate_Todoes':{
+                 const UnComplateTodos=todos.filter(data=>{
+                     return !data.isComplate 
+                 })  
+                 context?.setTodos(UnComplateTodos as TodoType[])
+                 break
+             }  
+             default:throw new Error("this case not found");
+     
+     
+             }   
+             }
         } 
-        case 'UnComplate_Todoes':{
-            const UnComplateTodos=todos.filter(data=>{
-                return !data.isComplate 
-            })  
-            context?.setTodos(UnComplateTodos as TodoType[])
-            break
-        }  
-        default:throw new Error("this case not found");
-            
-     
-        }   
-        }
-        
-     
       
-     }, [filter])
-     
+
+
+
+     }, [context?.filter])
     return (
         <div style={{ marginBottom: '2rem' }}>
             <main id="todoesMain" className={classes.main}>
@@ -101,9 +163,9 @@ export default function Todoes() {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={filter}
+                        value={context?.filter}
                         label="Status"
-                        onChange={(e) => setFilter(e.target.value)}>
+                        onChange={(e)=>changeFilterStatues(e.target.value)}>
                         <MenuItem value={'All_Todoes'}>All_Todoes</MenuItem>
                         <MenuItem value={'Complate_Todoes'}>Complate_Todoes</MenuItem>
                         <MenuItem value={'UnComplate_Todoes'}>UnComplate_Todoes</MenuItem>
@@ -117,7 +179,7 @@ export default function Todoes() {
             <Grid container  flexDirection={'row-reverse'} className='topbar' alignItems={'center'} spacing={5}>
               {context?.todo?.map(data=>(
                   <Grid item md={4} sm={6} xs={12}>
-                    <Todo {...data} />
+                    <Todo  {...data} />
                 </Grid>
              ) )}
               
