@@ -1,4 +1,4 @@
-// import { object, string } from 'yup'
+
 import * as Yup from "yup";
 
 const registerSchema = Yup.object().shape({

@@ -5,7 +5,7 @@ import { useRoutes } from 'react-router-dom'
 import { TodolistProvider } from './Context/TodolistContext'
 
 
-function App() {
+const App:React.FC=()=> {
 
   let router =useRoutes(routes)
 

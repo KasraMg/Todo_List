@@ -1,4 +1,7 @@
+
+
 {
+
   "users": [
     {
       "id": "02699cec-468e-4553-a2f9-1d680dafc797",
@@ -32,78 +35,32 @@
     }
   ],
   "todos": [
-    {
-      "id": "95c641dc-4220-41c6-bd16-99d5d5d6e3dc",
-      "content": "ded",
-      "date": 0,
+     {
+      "id": "3fe19b11-f1e5-4b27-909c-191490d1a5ef",
+      "time": "20:40",
+      "content": "xwx",
+      "date": "2023/9/2",
       "bg": "#0100ff70",
       "isComplate": false,
       "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "92bbcbce-243c-49b5-99d2-afc585ae56bd",
-      "content": "rgrg",
-      "date": 0,
-      "bg": "#0100ff70",
-      "isComplate": false,
-      "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "726a6b99-08f4-4041-a757-ec3f464bb2be",
-      "content": "effffffffffffffffffffffffffffff",
-      "date": 0,
-      "bg": "rgb(255 215 0)",
-      "isComplate": false,
-      "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "fecb6533-3975-4ae6-9351-03b5713c4e0f",
-      "content": "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
-      "date": 0,
-      "bg": "rgb(255 215 0)",
-      "isComplate": false,
-      "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "578b6655-dc8c-40e3-8e0f-1e203a63f786",
-      "content": "rrrr",
-      "date": 0,
-      "bg": "rgb(255 215 0)",
-      "isComplate": false,
-      "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "66cb8e05-176c-4d1f-8b05-221691f49224",
-      "content": "ergtgrgvergtgrgergtgrgergtgrgergtgrgergtgrgergtgrgergtgrg",
-      "date": 0,
-      "bg": "rgb(32 214 252)",
-      "isComplate": false,
-      "userId": "e4d001f7-ff30-488f-a5bc-2c627a301072"
-    },
-    {
-      "id": "d50f8576-2d0d-4008-a90c-9447f1206bfc",
-      "content": "2ed2ed",
-      "date": 0,
-      "bg": "#0100ff70",
-      "isComplate": false,
-      "userId": "aa870a19-b123-43b4-87dd-33de22b8fdc9"
     }
   ],
   "firstTodos": [
-    
     {
       "id": "1",
-      "content": "wlc to todoList",
-      "date": 0,
+      "content": "wlc to todoList", 
       "bg": "red",
-      "isComplate": false
+      "isComplate": false,
+      "time": "00:00", 
+      "date": "yesterday"
     },
     {
       "id": "2",
-      "content": "Please sign to make your first todos",
-      "date": 0,
+      "content": "Please sign to make your first todos", 
       "bg": "#0100ff70",
-      "isComplate": false
+      "isComplate": false,
+      "time": "00:00", 
+      "date": "yesterday" 
     }
   ]
 }

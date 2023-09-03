@@ -36,14 +36,13 @@ const [filter, setFilter] = useState<String>('All_Todoes');
 useEffect(() => {
   
   const localStorageData = JSON.parse(localStorage.getItem("user") as string)
-console.log(localStorageData);
+ 
 
   if (localStorageData) {
     fetch(`http://localhost:4000/users?id=${localStorageData.token}`)
     .then(res=>res.json())
     .then(data=>{ 
-      if (data) {
-        console.log(data); 
+      if (data) { 
         setUserInfos(data[0])
       }
     })
@@ -51,22 +50,18 @@ console.log(localStorageData);
 
     fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
     .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
+    .then(data=>{ 
       if (data) {
-        setTodos(data)
-        console.log(data);
+        setTodos(data) 
       }
     })
 
   }else{
     fetch(`http://localhost:4000/firstTodos`)
     .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
+    .then(data=>{ 
       if (data) {
-        setTodos(data)
-        console.log(data);
+        setTodos(data) 
       }
     })
   }
@@ -87,11 +82,8 @@ useEffect(() => {
 
     fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
     .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
-      if (data) {
-        console.log(data);
-        
+    .then(data=>{ 
+      if (data) {  
         setTodos(data)
       }
     })
@@ -99,11 +91,9 @@ useEffect(() => {
   }else{
     fetch(`http://localhost:4000/firstTodos`)
     .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
+    .then(data=>{ 
       if (data) {
-        setTodos(data)
-        console.log(data);
+        setTodos(data) 
       }
     })
   }

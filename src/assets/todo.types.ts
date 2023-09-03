@@ -18,3 +18,13 @@ export type Todo ={
     name:string,
     id:string | null
   };
+
+  export type NewTodo = {
+    id: number | string,
+    content:  string,
+    date: number | string,
+    bg: string,
+    isComplate: boolean,
+    userId: null | number
+    time:number | string
+  }
