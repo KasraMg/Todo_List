@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom'
 import { useFormik } from "formik";
 import swal from 'sweetalert';
 import registerSchema from '../../Validations/rules';
-
+import {useContext} from 'react'
+import { TodolistContext } from '../../Context/TodolistContext';
+import { useNavigate } from 'react-router-dom';
 const useStyles = makeStyles({
   login_icon:{
     position:'relative',
@@ -115,8 +117,8 @@ const useStyles = makeStyles({
 
  const Login= ():React.ReactElement=>{
   const classes = useStyles();
-
-
+  const context =useContext(TodolistContext)
+  const navigate=useNavigate()
   
 
 
@@ -163,11 +165,35 @@ const useStyles = makeStyles({
       const data=await res.json()
       console.log(data);
       
-       swal({
-        title: 'Email Was Send',
+      if (data.length) {
+        if (data[0].pass ==loginform.values.password ) {
+          const token =data[0].id
+          localStorage.setItem("user", JSON.stringify({ token }));
+          context?.setUserInfos(data[0])
+       
+             swal({
+        title: 'Login successfull',
         icon: 'success',
         
-    }) 
+    }).then(()=>{
+      navigate('/')
+    })
+  }
+     else{
+      swal({
+        title: 'Password is not correct',
+        icon: 'error',
+        
+    })
+        }
+      }else{
+        swal({
+          title: 'This email is not registered on the site',
+          icon: 'error',
+          
+      })
+      }
+    
     } 
 
 

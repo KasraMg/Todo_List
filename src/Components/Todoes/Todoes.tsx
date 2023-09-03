@@ -176,7 +176,7 @@ export default function Todoes() {
             </main>
           
 
-            <Grid container  flexDirection={'row-reverse'} className='topbar' alignItems={'center'} spacing={5}>
+            <Grid   style={{direction:'rtl'}} container  flexDirection={'row-reverse'} className='topbar' alignItems={'center'} spacing={5}>
               {context?.todo?.map(data=>(
                   <Grid item md={4} sm={6} xs={12}>
                     <Todo  {...data} />

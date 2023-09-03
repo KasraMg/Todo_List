@@ -199,7 +199,22 @@ export default function Register() {
     } 
      else {
 
-      const newUser={
+      const email = await fetch(`http://localhost:4000/users?email=${registerform.values.email}`)
+      const data=await email.json()
+      if (data.length) {
+        swal({
+          title:'This email has already been registered on the site',
+          icon:'error',
+          buttons:['Go login','try another']
+        }).then(res=>{
+          if (!res) {
+            navigate('/Login')
+          }
+          
+        })
+        
+      }else{
+          const newUser={
         id:crypto.randomUUID(),
         email:registerform.values.email,
         pass:registerform.values.password,
@@ -234,6 +249,8 @@ export default function Register() {
       }) 
       }
 
+      }
+    
       
     } 
 

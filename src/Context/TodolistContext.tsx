@@ -107,7 +107,7 @@ useEffect(() => {
       }
     })
   }
-}, [])
+}, [location.href])
 
   return (
     <TodolistContext.Provider value={{ color, setcolor,todo,setTodos,filter, setFilter,userInfos,setUserInfos}}>

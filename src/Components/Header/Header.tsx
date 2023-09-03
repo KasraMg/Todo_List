@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import {useContext} from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
 import { BiSolidUser } from 'react-icons/bi'
+import swal from 'sweetalert';
 const useStyles = makeStyles({
     header: {
         display: 'flex',
@@ -35,13 +36,27 @@ export default function Header() {
     const classes = useStyles();
     const context = useContext(TodolistContext) 
 
+    const logoutHandler=()=>{
+        swal({
+            title:'Do tou want to logout?',
+            icon:'warning',
+            buttons:['no','yes']
+        }).then(res=>{
+            if (res) {
+                context?.setUserInfos(null)
+                context?.setTodos([])
+                localStorage.removeItem('user')
+                location.href='/'
+            }
+        })
+    }
 
 
     return (
      <header className={classes.header}>
        <Link to={context?.userInfos?.name ? '' :'/Login'}>
         {context?.userInfos?.name ?(
-     <Button className={classes.buttonWithText} variant="contained">{context?.userInfos?.name}</Button> 
+     <Button onClick={logoutHandler} className={classes.buttonWithText} variant="contained">{context?.userInfos?.name}</Button> 
         ):(
             <Button className={classes.buttonWithIcon} variant="contained"><BiSolidUser/></Button> 
         )}

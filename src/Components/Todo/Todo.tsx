@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
         padding:'1rem 1rem 4rem 1rem',
         position:'relative',
         marginTop:'2rem',
+        direction:'ltr',
         borderRadius:'2px',
         boxShadow:' 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)'
         
@@ -28,7 +29,8 @@ import { useNavigate } from 'react-router-dom';
             width:'90%'
         },
         text:{
-            wordBreak:'break-word'
+            wordBreak:'break-word',
+            height:'30px'
         },
         icon:{
             cursor: 'pointer'
