@@ -7,26 +7,27 @@
 input::placeholder{
   color: white; 
 }
-@media (max-width:500px) {
-  #todo{
-    right: 5px;
-  }
+
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
 }
-@media (max-width:584px) {
-  #deleteTodo{
-   width: 100%;
-   margin-top:2rem !important;
-  }#todoesMain{
-    justify-content: center !important;
-  }
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
 }
-@media (max-width:767px) {
-  #root{
-    padding: 1rem;
-  }aside{
-    display: none !important;
-  }
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: rgba(1, 0, 255, 0.44);
 }
+
 p {
   font-family: cursive;
 }
@@ -136,3 +137,24 @@ hr.sep-3::after {
       transform: rotate(360deg);
     }
   } 
+  
+@media (max-width:500px) {
+  #todo{
+    right: 5px;
+  }
+}
+@media (max-width:584px) {
+  #deleteTodo{
+   width: 100%;
+   margin-top:2rem !important;
+  }#todoesMain{
+    justify-content: center !important;
+  }
+}
+@media (max-width:767px) {
+  #root{
+    padding: 1rem;
+  }aside{
+    display: none !important;
+  }
+}
