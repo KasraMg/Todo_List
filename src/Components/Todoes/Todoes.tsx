@@ -49,7 +49,7 @@ const Todoes=()=> {
                 .then((result:boolean) => {
                     if (result) {
                         context?.todo?.map(async (data) => {
-                            const res = await fetch(`https://todo-backend.iran.liara.run/todos/${data.id}`, {
+                             await fetch(`https://todo-backend.iran.liara.run/todos/${data.id}`, {
                                 method: 'DELETE'
                             });
                         })

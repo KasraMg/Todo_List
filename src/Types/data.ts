@@ -5,7 +5,7 @@ const colors:Color[] = [
    {id:2,name:'#ff7b18'},
    {id:3,name:'orange'},
    {id:4,name:'rgb(255 215 0)'},
-   {id:5,name:'yellow'},
+   {id:5,name:'#ecec0e'},
    {id:6,name:'#7aff00'},
    {id:7,name:'#35e535'},
    {id:8,name:'green'},

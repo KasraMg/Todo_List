@@ -129,7 +129,7 @@ const Todo =(props: todoType)=> {
                     time:props.time
                 }
 
-                const res = await fetch(`https://todo-backend.iran.liara.run/todos/${props.id}`, {
+                  await fetch(`https://todo-backend.iran.liara.run/todos/${props.id}`, {
                     method: 'PUT',
                     headers: {
                         "Content-Type": "application/json"
