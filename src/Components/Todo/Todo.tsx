@@ -1,11 +1,13 @@
 
 import { makeStyles } from '@mui/styles';
 import { AiFillDelete, AiOutlineCheck } from 'react-icons/ai' 
-import { NewTodo, Todo as todoType } from '../../assets/todo.Types';
+import { NewTodo, Todo as todoType } from '../../Types/Todo.types';
 import swal from 'sweetalert';
 import { useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader/Loader';
+import { useState } from 'react'
 
 const useStyles = makeStyles({
     todo: {
@@ -63,8 +65,8 @@ const useStyles = makeStyles({
 });
 
 
-const Todo:JSX.ElementType=(props: todoType)=> {
- 
+const Todo =(props: todoType)=> {
+    const [pending,setPending]=useState<boolean>(false)
     const navigate = useNavigate()
     const context = useContext(TodolistContext)
     const classes = useStyles();
@@ -73,7 +75,8 @@ const Todo:JSX.ElementType=(props: todoType)=> {
 
     const updateTodos = async () => {
         if (localStorageData) {
-            const res = await fetch(`http://localhost:4000/users/${localStorageData.token}/todos`);
+
+            const res = await fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`);
             const data = (await res.json()) as todoType[];
             context?.setTodos(data);
         }
@@ -87,12 +90,14 @@ const Todo:JSX.ElementType=(props: todoType)=> {
             buttons: ['no', 'yes']
         })
         .then(async (result:boolean) => {
+            setPending(true)
             if (result) {
-                const res = await fetch(`http://localhost:4000/todos/${props.id}`, {
+                const res = await fetch(`https://todo-backend.iran.liara.run/todos/${props.id}`, {
                     method: 'DELETE' 
                 }); 
                 if (res.status == 200) {
                     updateTodos()
+                    setPending(false)
                     swal({
                         title: 'Todo was Delete',
                         icon: 'success'
@@ -113,7 +118,7 @@ const Todo:JSX.ElementType=(props: todoType)=> {
         })
         .then(async (result:boolean) => {
             if (result) {
-
+                setPending(true)
                 const newTodo:NewTodo = {
                     id: props.id,
                     content: props.content,
@@ -124,13 +129,14 @@ const Todo:JSX.ElementType=(props: todoType)=> {
                     time:props.time
                 }
 
-                const res = await fetch(`http://localhost:4000/todos/${props.id}`, {
+                const res = await fetch(`https://todo-backend.iran.liara.run/todos/${props.id}`, {
                     method: 'PUT',
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(newTodo)
                 })
+                setPending(false)
                 context?.setFilter('All_Todoes')
                 updateTodos()  
             }
@@ -205,6 +211,10 @@ const Todo:JSX.ElementType=(props: todoType)=> {
                     <div className={classes.checkInput}></div>
                 </>
             )}
+
+        {pending &&(
+        <Loader/>
+      )}
         </section>
     )
 }

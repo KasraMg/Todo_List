@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Todo,Color,User } from "../assets/todo.Types";
+import { Todo,Color,User } from "../Types/Todo.types";
 
 
 type AuthContextProviderProps = {
@@ -39,29 +39,29 @@ useEffect(() => {
  
 
   if (localStorageData) {
-    fetch(`http://localhost:4000/users?id=${localStorageData.token}`)
-    .then(res=>res.json())
+    fetch(`https://todo-backend.iran.liara.run/users?id=${localStorageData.token}`)
+    .then(res=>res.json() )
     .then(data=>{ 
       if (data) { 
-        setUserInfos(data[0])
+        setUserInfos(data[0] as User)
       }
     })
 
 
-    fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+    fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`)
     .then(res=>res.json())
     .then(data=>{ 
       if (data) {
-        setTodos(data) 
+        setTodos(data as Todo[]) 
       }
     })
 
   }else{
-    fetch(`http://localhost:4000/firstTodos`)
+    fetch(`https://todo-backend.iran.liara.run/firstTodos`)
     .then(res=>res.json())
     .then(data=>{ 
       if (data) {
-        setTodos(data) 
+        setTodos(data  as Todo[]) 
       }
     })
   }
@@ -71,29 +71,29 @@ useEffect(() => {
   const localStorageData = JSON.parse(localStorage.getItem("user") as string)
 
   if (localStorageData) {
-    fetch(`http://localhost:4000/users?id=${localStorageData.token}`)
+    fetch(`https://todo-backend.iran.liara.run/users?id=${localStorageData.token}`)
     .then(res=>res.json())
     .then(data=>{ 
       if (data) {
-        setUserInfos(data[0])
+        setUserInfos(data[0]  as User)
       }
     })
 
 
-    fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+    fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`)
     .then(res=>res.json())
     .then(data=>{ 
       if (data) {  
-        setTodos(data)
+        setTodos(data  as Todo[])
       }
     })
 
   }else{
-    fetch(`http://localhost:4000/firstTodos`)
+    fetch(`https://todo-backend.iran.liara.run/firstTodos`)
     .then(res=>res.json())
     .then(data=>{ 
       if (data) {
-        setTodos(data) 
+        setTodos(data  as Todo[]) 
       }
     })
   }
@@ -105,3 +105,4 @@ useEffect(() => {
     </TodolistContext.Provider>
   );
 };
+

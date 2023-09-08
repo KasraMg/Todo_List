@@ -2,16 +2,15 @@
 import { Container } from '@mui/material';
 import { Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Button } from '@mui/material'
-import './TodoList.css'
+import { Button } from '@mui/material' 
 import Todoes from '../Todoes/Todoes';
-import colors from '../../assets/data'
+import colors from '../../Types/data'
 import { useState, useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext';
-import { Color, NewTodo, Todo } from '../../assets/todo.Types';
+import { Color, NewTodo, Todo } from '../../Types/Todo.types';
 import swal from 'sweetalert';
 import { useNavigate } from 'react-router-dom';
-
+import Loader from '../Loader/Loader';
 
 const useStyles = makeStyles({
   input: {
@@ -43,12 +42,13 @@ const useStyles = makeStyles({
   }
 });
 
-const TodoList:React.FC=()=> {
+const TodoList=()=> {
 
   const classes = useStyles();
   const context = useContext(TodolistContext)
   const [allColors, setAllcolors] = useState<Color[]>(colors)
   const [todoInput, setTodoInput] = useState<string>()
+  const [pending,setPending]=useState<boolean>(false)
   const navigate = useNavigate()
   const selectColor = (obj: Color) => {
     context?.setcolor(obj)
@@ -57,7 +57,7 @@ const TodoList:React.FC=()=> {
   const localStorageData = JSON.parse(localStorage.getItem("user") as string)
   const updateTodos = async () => {
     if (localStorageData) {
-      const res = await fetch(`http://localhost:4000/users/${localStorageData.token}/todos`);
+      const res = await fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`);
       const data = (await res.json()) as Todo[];
       context?.setTodos(data);
     }
@@ -78,11 +78,12 @@ const TodoList:React.FC=()=> {
  ;
 
   const createTodo = async () => {
-
+    
     let newId = crypto.randomUUID()
     const localStorageData = JSON.parse(localStorage.getItem("user") as string)
 
     if (localStorageData) {
+      setPending(true)
       let newTodo:NewTodo = {
         id: newId ,
         time:hours + ':' + minutes,
@@ -92,7 +93,7 @@ const TodoList:React.FC=()=> {
         isComplate: false,
         userId: localStorageData ? localStorageData.token : null
       }
-      const res = await fetch("http://localhost:4000/todos", {
+      const res = await fetch("https://todo-backend.iran.liara.run/todos", {
         method: 'POST',
         headers: {
           "Content-Type": "application/json"
@@ -100,6 +101,7 @@ const TodoList:React.FC=()=> {
         body: JSON.stringify(newTodo)
       }); 
       if (res.status == 201) {
+        setPending(false)
         updateTodos()
         swal({
           title: 'Todo was added',
@@ -149,9 +151,14 @@ const TodoList:React.FC=()=> {
 
       <aside className={classes.aside}>
         {allColors.map(color => (
-          <div onClick={() => selectColor(color)} className={classes.asideSection} style={{ backgroundColor: color.name }}></div>
+          <div key={crypto.randomUUID()} onClick={() => selectColor(color)} className={classes.asideSection} style={{ backgroundColor: color.name }}></div>
         ))}
       </aside>
+
+
+      {pending &&(
+        <Loader/>
+      )}
     </>
   )
 }

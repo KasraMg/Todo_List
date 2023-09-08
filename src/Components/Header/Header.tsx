@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 
 });
 
-const Header = (): React.ReactElement => {
+const Header = () => {
 
     const classes = useStyles();
     const context = useContext(TodolistContext)

@@ -1,10 +1,6 @@
+import { Color } from "./Todo.types"
 
-type colorType={
-    id:number,
-    name:string
-}
-
-const colors:colorType[] = [
+const colors:Color[] = [
    {id:1,name:'red'},
    {id:2,name:'#ff7b18'},
    {id:3,name:'orange'},

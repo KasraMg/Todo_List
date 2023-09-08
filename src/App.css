@@ -30,6 +30,7 @@ input::placeholder{
 p {
   font-family: cursive;
 }
+/* swal */
 .swal-footer{
   text-align: center;
 }
@@ -42,6 +43,7 @@ p {
 .swal-button--cancel{
   color: white;
 }
+/* swal */
 input:-webkit-autofill, input:-webkit-autofill:focus {
          transition: background-color 600000s 0s, color 600000s 0s;
  }
@@ -49,3 +51,88 @@ input:-webkit-autofill, input:-webkit-autofill:focus {
  input[data-autocompleted] {
          background-color: transparent !important;
    }
+ 
+/* todoList */
+hr.sep-3 {
+  border: none;
+  margin-top: 5rem;
+  height: 1px;
+  background-image: linear-gradient(to right, #212be5, #e9e9e9, #212be5);
+}
+hr.sep-3::after {
+  content: '§';
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(60deg);
+  transform-origin: 50% 50%;
+  padding: 1rem;
+  background-color: white;
+}
+@media (max-width:500px) {
+  .MuiInputBase-input{
+    font-size: .9rem !important;
+    padding: 15.5px 32px 15.5px 7px!important;
+  }
+ }
+ /* todoList */
+ 
+ .screen__background {		
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 0;
+	-webkit-clip-path: inset(0 0 0 0);
+	clip-path: inset(0 0 0 0);	
+}
+ 
+.login__input:active,
+.login__input:focus,
+.login__input:hover,
+.Register__input:active,
+.Register__input:focus,
+.Register__input:hover {
+	outline: none;
+	border-bottom-color: #6A679E;
+}
+ 
+.login__submit:active,
+.login__submit:focus,
+.login__submit:hover,
+.Register__submit:active,
+.Register__submit:focus,
+.Register__submit:hover  {
+	border-color: #6A679E;
+	outline: none;
+}
+ 
+#screen input::placeholder{
+    color: black !important; 
+  }
+ 
+  #loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 3px solid;
+    border-color: #003cff transparent;
+  }
+  #loader{ 
+    animation:rotation 1s linear infinite
+  }
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 

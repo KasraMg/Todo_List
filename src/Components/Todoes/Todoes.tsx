@@ -6,7 +6,7 @@ import Todo from "../Todo/Todo";
 import { useContext } from 'react'
 import { TodolistContext } from '../../Context/TodolistContext'
 import swal from "sweetalert";
-import { Todo as TodoType } from '../../assets/todo.Types'
+import { Todo as TodoType } from '../../Types/Todo.types'
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Todoes:React.FC=()=> {
+const Todoes=()=> {
     const classes = useStyles();
     const navigate = useNavigate()
     const [todos, setNewTodos] = useState<TodoType[]>([])
@@ -49,7 +49,7 @@ const Todoes:React.FC=()=> {
                 .then((result:boolean) => {
                     if (result) {
                         context?.todo?.map(async (data) => {
-                            const res = await fetch(`http://localhost:4000/todos/${data.id}`, {
+                            const res = await fetch(`https://todo-backend.iran.liara.run/todos/${data.id}`, {
                                 method: 'DELETE'
                             });
                         })
@@ -97,12 +97,12 @@ const Todoes:React.FC=()=> {
 
     useEffect(() => {
         if (localStorageData) {
-            fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+            fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`)
                 .then(res => res.json())
                 .then(data => {
 
                     if (data) {
-                        setNewTodos(data)
+                        setNewTodos(data  as TodoType[])
                     }
                 })
 
@@ -114,10 +114,10 @@ const Todoes:React.FC=()=> {
 
     useEffect(() => {
         if (localStorageData) {
-            fetch(`http://localhost:4000/users/${localStorageData.token}/todos`)
+            fetch(`https://todo-backend.iran.liara.run/users/${localStorageData.token}/todos`)
                 .then(res => res.json())
                 .then(data => {
-                    setNewTodos(data)
+                    setNewTodos(data  as TodoType[])
                 })
         }
 

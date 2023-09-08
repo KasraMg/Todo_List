@@ -1,6 +1,5 @@
 import { Container } from '@mui/material'
-import { makeStyles } from '@mui/styles';
-import './Register.css'
+import { makeStyles } from '@mui/styles'; 
 import { BiSolidUser } from 'react-icons/bi'
 import { AiFillLock } from 'react-icons/ai'
 import { Link, useNavigate } from 'react-router-dom'
@@ -116,7 +115,7 @@ const useStyles = makeStyles({
 
 });
 
-const Register:React.FC=()=> {
+const Register=()=> {
 
   const classes = useStyles();
   const context = useContext(TodolistContext)
@@ -197,7 +196,7 @@ const Register:React.FC=()=> {
       })
     }
     else {
-      const email = await fetch(`http://localhost:4000/users?email=${registerform.values.email}`)
+      const email = await fetch(`https://todo-backend.iran.liara.run/users?email=${registerform.values.email}`)
       const data = await email.json()
 
       if (data.length) {
@@ -219,7 +218,7 @@ const Register:React.FC=()=> {
           name: registerform.values.name
         }
 
-        const res = await fetch("http://localhost:4000/users", {
+        const res = await fetch("https://todo-backend.iran.liara.run/users", {
           method: 'POST',
           headers: {
             "Content-Type": "application/json"
