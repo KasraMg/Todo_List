@@ -74,6 +74,10 @@ hr.sep-3::after {
   .MuiInputBase-input{
     font-size: .9rem !important;
     padding: 15.5px 32px 15.5px 7px!important;
+  }#screen{
+    width: 280px !important;
+    position: relative;
+    right: 4px;
   }
  }
  /* todoList */
@@ -87,6 +91,7 @@ hr.sep-3::after {
 	z-index: 0;
 	-webkit-clip-path: inset(0 0 0 0);
 	clip-path: inset(0 0 0 0);	
+  overflow: hidden;
 }
  
 .login__input:active,

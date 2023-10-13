@@ -67,8 +67,7 @@ const useStyles = makeStyles({
     right: '50px',
     borderRadius: '60px',
   },
-  Register: {
-    width: '320px',
+  Register: { 
     padding: '30px',
     paddingTop: '116px',
   },
@@ -255,7 +254,7 @@ const Register=()=> {
   }
 
   return (
-    <Container>
+    <Container style={{paddingLeft:'0px',paddingRight:'0px'}}>
       <div id='screen' className={classes.screen}>
         <div className={classes.screen__content}>
           <form className={classes.Register}>

@@ -66,8 +66,7 @@ const useStyles = makeStyles({
     right: '50px',
     borderRadius: '60px',
   },
-  login: {
-    width: '320px',
+  login: { 
     padding: '30px',
     paddingTop: '156px',
   },
@@ -190,7 +189,7 @@ const useStyles = makeStyles({
   }
 
   return (
-    <Container>
+    <Container style={{paddingLeft:'0px',paddingRight:'0px'}}>
       <div id='screen' className={classes.screen}>
         <div className={classes.screen__content}>
 
